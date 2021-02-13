@@ -1,15 +1,15 @@
 package com.google.codelab.reminderwithgps
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 
-class LoginActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_sign_in)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

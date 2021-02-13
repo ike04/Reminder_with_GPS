@@ -4,4 +4,5 @@
     <string name="password_text">パスワード</string>
     <string name="login_btn">メールアドレスでログイン</string>
     <string name="sign_in_btn">サインアップする</string>
+    <string name="password_confirm_text">確認パスワード</string>
 </resources>
