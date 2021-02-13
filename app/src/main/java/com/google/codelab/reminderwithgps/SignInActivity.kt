@@ -1,6 +1,7 @@
 package com.google.codelab.reminderwithgps
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -27,7 +28,10 @@ class SignInActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
-                // TODO
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+
                 return true
             }
             android.R.id.home -> {
