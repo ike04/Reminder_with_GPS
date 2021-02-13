@@ -13,27 +13,29 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        supportActionBar?.let{
-            it.setTitle(R.string.login)
+        supportActionBar?.setTitle(R.string.login)
+
+        val loginBtn = findViewById<Button>(R.id.loginBtn)
+        val signInBtn = findViewById<Button>(R.id.signInBtn)
+
+        loginBtn.setOnClickListener {
+            // TODO
         }
 
-        val loginBtn=findViewById<Button>(R.id.loginBtn)
-        val signInBtn=findViewById<Button>(R.id.signInBtn)
-
         signInBtn.setOnClickListener {
-            val intent= Intent(this,SignInActivity::class.java)
+            val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
         }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         val imm: InputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val focus = currentFocus ?: return false
 
         imm.hideSoftInputFromWindow(
-                focus.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
+            focus.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
         )
         return false
     }
