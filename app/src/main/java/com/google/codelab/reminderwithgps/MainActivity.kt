@@ -9,8 +9,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_remind_list, RemindListFragment())
+            .commit()
+
         val menuBottomNavigationBar: BottomNavigationView = findViewById(R.id.bottom_navigation)
         menuBottomNavigationBar.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
     }
 
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
