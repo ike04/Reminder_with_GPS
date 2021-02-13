@@ -1,8 +1,11 @@
 package com.google.codelab.reminderwithgps
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 
@@ -10,6 +13,28 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+
+        supportActionBar?.let{
+            it.setTitle(R.string.sign_up)
+            it.setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_save, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.save_button -> {
+
+            }
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return false
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
