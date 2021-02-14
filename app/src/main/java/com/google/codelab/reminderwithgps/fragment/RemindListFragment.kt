@@ -1,4 +1,4 @@
-package com.google.codelab.reminderwithgps
+package com.google.codelab.reminderwithgps.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.Remind
+import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
 import java.util.*
 
 class RemindListFragment : Fragment() {

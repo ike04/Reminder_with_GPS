@@ -1,8 +1,11 @@
-package com.google.codelab.reminderwithgps
+package com.google.codelab.reminderwithgps.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.codelab.reminderwithgps.fragment.MapFragment
+import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.fragment.RemindListFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

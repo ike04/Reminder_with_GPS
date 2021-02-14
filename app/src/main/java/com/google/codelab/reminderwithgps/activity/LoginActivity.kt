@@ -1,4 +1,4 @@
-package com.google.codelab.reminderwithgps
+package com.google.codelab.reminderwithgps.activity
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.codelab.reminderwithgps.R
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
