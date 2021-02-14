@@ -22,15 +22,18 @@ class MainActivity : AppCompatActivity() {
     private val onNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navi_book_list -> {
+                R.id.navi_remind_list -> {
                     supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.activity_main, RemindListFragment())
                         .commit()
                     true
                 }
-                R.id.navi_setting -> {
-
+                R.id.navi_map -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.activity_main, MapFragment())
+                        .commit()
                     true
                 }
                 else -> false
