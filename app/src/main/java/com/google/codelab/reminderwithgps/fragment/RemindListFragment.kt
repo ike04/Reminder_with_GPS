@@ -66,6 +66,7 @@ class RemindListFragment : Fragment() {
         while (i <= 10) {
             val data = Remind()
             data.title = "テストデータ$i"
+            data.memo = ""
             data.lat = 35.6578976
             data.lng = 139.9070041
             data.dateTime = Date()

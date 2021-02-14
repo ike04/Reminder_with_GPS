@@ -7,8 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.utils.ValidationUtils
+import com.google.codelab.reminderwithgps.utils.showAlertDialog
 
 class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +32,20 @@ class SignInActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.sign_in_button -> {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                val email = findViewById<TextView>(R.id.signInEmailEditText).text.toString()
+                val password = findViewById<TextView>(R.id.signInPasswordEditText).text.toString()
+                val passwordConfirm =
+                    findViewById<TextView>(R.id.signInPasswordConfirmEditText).text.toString()
+
+                val errorMessage = ValidationUtils.checkSignUp(email, password, passwordConfirm)
+
+                if (errorMessage == null) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    showAlertDialog(R.string.warning, errorMessage)
+                }
 
                 return true
             }

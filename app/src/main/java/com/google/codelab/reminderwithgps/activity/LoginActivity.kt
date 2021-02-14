@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.utils.ValidationUtils
+import com.google.codelab.reminderwithgps.utils.showAlertDialog
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +23,18 @@ class LoginActivity : AppCompatActivity() {
         val signInBtn = findViewById<Button>(R.id.signInBtn)
 
         loginBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+            val email = findViewById<TextView>(R.id.emailEditText).text.toString()
+            val password = findViewById<TextView>(R.id.passwordEditText).text.toString()
+
+            val errorMessage = ValidationUtils.checkLogin(email, password)
+
+            if (errorMessage == null) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                showAlertDialog(R.string.warning, errorMessage)
+            }
         }
 
         signInBtn.setOnClickListener {
