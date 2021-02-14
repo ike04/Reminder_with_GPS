@@ -1,9 +1,8 @@
 package com.google.codelab.reminderwithgps.fragment
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.Remind
 import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
+import com.google.codelab.reminderwithgps.activity.AddRemindActivity
 import java.util.*
 
 class RemindListFragment : Fragment() {
@@ -22,7 +22,7 @@ class RemindListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_remind_list, container, false)
 
         requireActivity().setTitle(R.string.remind_list)
-
+        setHasOptionsMenu(true)
         return view
     }
 
@@ -43,6 +43,21 @@ class RemindListFragment : Fragment() {
         recyclerView.addItemDecoration(separateLine)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_add, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_add -> {
+                val intent = Intent(activity, AddRemindActivity::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun createTestData(): List<Remind> {
         val dataSet: MutableList<Remind> = ArrayList()

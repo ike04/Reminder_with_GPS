@@ -10,6 +10,8 @@
     <string name="remind_list">一覧</string>
     <string name="map_list">地図</string>
     <string name="done_text">Done</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_remind">リマインド作成</string>
+    <string name="remind_title_text">リマインドのタイトル</string>
+    <string name="remind_memo_text">メモ</string>
+    <string name="save">保存</string>
 </resources>

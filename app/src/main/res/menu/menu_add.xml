@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/save_button"
-        android:text="@string/save"
-        android:title="@string/save"
+    <item android:id="@+id/menu_add"
+        android:text="@string/add_remind"
+        android:title="@string/add_remind"
+        android:icon="@android:drawable/ic_input_add"
         app:showAsAction="ifRoom">
     </item>
 </menu>

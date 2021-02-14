@@ -10,28 +10,26 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.codelab.reminderwithgps.R
 
-class SignInActivity : AppCompatActivity() {
+class AddRemindActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+        setContentView(R.layout.activity_add_remind)
 
-        supportActionBar?.let {
-            it.setTitle(R.string.sign_up)
-            it.setDisplayHomeAsUpEnabled(true)
-        }
+        supportActionBar?.setTitle(R.string.add_remind)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_sign_in, menu)
+        menuInflater.inflate(R.menu.menu_save, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.sign_in_button -> {
+            R.id.save_button -> {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
-                finish()
 
                 return true
             }
