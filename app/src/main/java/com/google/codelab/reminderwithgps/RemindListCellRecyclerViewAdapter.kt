@@ -1,6 +1,5 @@
 package com.google.codelab.reminderwithgps
 
-import android.content.Context
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RemindListCellRecyclerViewAdapter(
     private val remindList: List<Remind>,
-    private val context: Context,
     private val listener: ListListener
 ) : RecyclerView.Adapter<RemindListCellRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_remind_cell, parent, false)
+            .inflate(R.layout.cell_remind_list, parent, false)
 
         return ViewHolder(view)
     }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,24 +20,24 @@ class RemindListFragment : Fragment() {
 
         requireActivity().setTitle(R.string.remind_list)
 
-        if (view !is RecyclerView) {
-            return view
-        }
+        return view
+    }
 
-        view.setHasFixedSize(true)
-        view.layoutManager=LinearLayoutManager(context)
-        view.adapter = RemindListCellRecyclerViewAdapter(
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_remind_list)
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = RemindListCellRecyclerViewAdapter(
             createTestData(),
-            view.context,
             object : RemindListCellRecyclerViewAdapter.ListListener {
                 override fun onClickRow(tappedView: View, selectedRemind: Remind) {}
             }
         )
 
         val separateLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        view.addItemDecoration(separateLine)
-
-        return view
+        recyclerView.addItemDecoration(separateLine)
     }
 
 
