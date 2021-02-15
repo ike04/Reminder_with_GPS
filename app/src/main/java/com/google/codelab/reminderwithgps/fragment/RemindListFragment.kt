@@ -3,6 +3,8 @@ package com.google.codelab.reminderwithgps.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +25,7 @@ class RemindListFragment : Fragment() {
 
         requireActivity().setTitle(R.string.remind_list)
         setHasOptionsMenu(true)
+        (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         view.findViewById<RecyclerView>(R.id.recycler_remind_list).apply {
             setHasFixedSize(true)
@@ -31,7 +34,20 @@ class RemindListFragment : Fragment() {
             adapter = RemindListCellRecyclerViewAdapter(
                 createTestData(),
                 object : RemindListCellRecyclerViewAdapter.ListListener {
-                    override fun onClickRow(tappedView: View, selectedRemind: Remind) {}
+                    override fun onClickRow(tappedView: View, selectedRemind: Remind) {
+//                        setFragmentResult(
+//                            "selectedBook", bundleOf(
+//                                "book_image" to selectedBook.image,
+//                                "book_title" to selectedBook.title,
+//                                "book_price" to selectedBook.price,
+//                                "book_purchase_date" to selectedBook.purchaseDate
+//                            )
+//                        )
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.activity_main, EditRemindFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
                 }
             )
 
