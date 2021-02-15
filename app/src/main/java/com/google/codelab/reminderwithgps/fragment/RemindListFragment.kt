@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.codelab.reminderwithgps.R
@@ -29,8 +30,7 @@ class RemindListFragment : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.recycler_remind_list).apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(context)
-
+            layoutManager=GridLayoutManager(context,2,GridLayoutManager.VERTICAL,false)
             adapter = RemindListCellRecyclerViewAdapter(
                 createTestData(),
                 object : RemindListCellRecyclerViewAdapter.ListListener {
