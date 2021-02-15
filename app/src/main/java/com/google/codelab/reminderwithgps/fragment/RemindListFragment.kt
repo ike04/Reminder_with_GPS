@@ -23,25 +23,25 @@ class RemindListFragment : Fragment() {
 
         requireActivity().setTitle(R.string.remind_list)
         setHasOptionsMenu(true)
+
+        view.findViewById<RecyclerView>(R.id.recycler_remind_list).apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+
+            adapter = RemindListCellRecyclerViewAdapter(
+                createTestData(),
+                object : RemindListCellRecyclerViewAdapter.ListListener {
+                    override fun onClickRow(tappedView: View, selectedRemind: Remind) {}
+                }
+            )
+
+            val separateLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+            addItemDecoration(separateLine)
+        }
+
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_remind_list)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = RemindListCellRecyclerViewAdapter(
-            createTestData(),
-            object : RemindListCellRecyclerViewAdapter.ListListener {
-                override fun onClickRow(tappedView: View, selectedRemind: Remind) {}
-            }
-        )
-
-        val separateLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        recyclerView.addItemDecoration(separateLine)
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -71,6 +71,7 @@ class RemindListFragment : Fragment() {
             data.lng = 139.9070041
             data.dateTime = Date()
             data.isDone = true
+            dataSet.add(data)
             i += 1
         }
         return dataSet
