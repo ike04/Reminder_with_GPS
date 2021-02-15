@@ -4,6 +4,7 @@ import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -24,6 +25,7 @@ class RemindListCellRecyclerViewAdapter(
         holder.titleText.text = remind.title
         holder.date.text =
             DateFormat.format("yyyy/MM/dd kk:mm", remind.dateTime).toString()
+        holder.isDone.isChecked = remind.isDone
 
 
         holder.itemView.setOnClickListener {
@@ -36,6 +38,7 @@ class RemindListCellRecyclerViewAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleText: TextView = view.findViewById(R.id.titleTextView)
         val date: TextView = view.findViewById(R.id.dateTextView)
+        val isDone: CheckBox = view.findViewById(R.id.doneCheckBox)
     }
 
     interface ListListener {
