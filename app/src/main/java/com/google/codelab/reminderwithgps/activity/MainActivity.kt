@@ -1,10 +1,13 @@
 package com.google.codelab.reminderwithgps.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.codelab.reminderwithgps.fragment.MapFragment
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.fragment.MapFragment
 import com.google.codelab.reminderwithgps.fragment.RemindListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -42,4 +45,16 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        val imm: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val focus = currentFocus ?: return false
+
+        imm.hideSoftInputFromWindow(
+            focus.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
+        return false
+    }
 }

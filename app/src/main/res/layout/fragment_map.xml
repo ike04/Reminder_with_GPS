@@ -10,7 +10,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
+        tools:context=".fragment.MapFragment"
         map:cameraZoom="15.0"
         map:layout_constraintTop_toTopOf="parent"
         map:layout_constraintBottom_toBottomOf="parent"
