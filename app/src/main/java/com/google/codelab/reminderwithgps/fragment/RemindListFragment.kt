@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.Remind
@@ -30,7 +28,7 @@ class RemindListFragment : Fragment() {
 
         view.findViewById<RecyclerView>(R.id.recycler_remind_list).apply {
             setHasFixedSize(true)
-            layoutManager=GridLayoutManager(context,2,GridLayoutManager.VERTICAL,false)
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
             adapter = RemindListCellRecyclerViewAdapter(
                 createTestData(),
                 object : RemindListCellRecyclerViewAdapter.ListListener {
@@ -50,7 +48,6 @@ class RemindListFragment : Fragment() {
                     }
                 }
             )
-
             val separateLine = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             addItemDecoration(separateLine)
         }
@@ -87,6 +84,7 @@ class RemindListFragment : Fragment() {
             data.lng = 139.9070041
             data.dateTime = Date()
             data.isDone = true
+
             dataSet.add(data)
             i += 1
         }
