@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,6 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.utils.MapUtils
 
 class EditRemindFragment : Fragment(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
@@ -61,29 +61,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         ) {
             myLocationEnable()
         } else {
-            requestLocationPermission()
-        }
-    }
-
-    private fun requestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            // 許可を求め、拒否されていた場合
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-            )
-        } else {
-            // まだ許可を求めていない
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-            )
+            MapUtils.requestLocationPermission(requireContext(),requireActivity())
         }
     }
 

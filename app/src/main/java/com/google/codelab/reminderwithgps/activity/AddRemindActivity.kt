@@ -21,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.utils.MapUtils.requestLocationPermission
 
 class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
@@ -58,29 +59,7 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
         ) {
             myLocationEnable()
         } else {
-            requestLocationPermission()
-        }
-    }
-
-    private fun requestLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            // 許可を求め、拒否されていた場合
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-            )
-        } else {
-            // まだ許可を求めていない
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-            )
+            requestLocationPermission(this, this)
         }
     }
 
@@ -132,6 +111,15 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+    override fun onMapLongClick(point: LatLng) {
+        mMap.clear()
+        val markerOptions = MarkerOptions()
+        val marker = markerOptions.position(point).title("リマインド箇所")
+        mMap.addMarker(marker)
+        selectedLat = markerOptions.position.latitude
+        selectedLng = markerOptions.position.longitude
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_save, menu)
         return true
@@ -165,14 +153,5 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
             InputMethodManager.HIDE_NOT_ALWAYS
         )
         return false
-    }
-
-    override fun onMapLongClick(point: LatLng) {
-        mMap.clear()
-        val markerOptions = MarkerOptions()
-        val marker = markerOptions.position(point).title("リマインド箇所")
-        mMap.addMarker(marker)
-        selectedLat = markerOptions.position.latitude
-        selectedLng = markerOptions.position.longitude
     }
 }
