@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -23,13 +22,16 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
 
-class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback , GoogleMap.OnMapLongClickListener{
+class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
+    GoogleMap.OnMapLongClickListener {
     private lateinit var mMap: GoogleMap
     private val MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
+    private var selectedLat: Double = 0.0
+    private var selectedLng: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,7 +169,10 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback , GoogleMap.On
 
     override fun onMapLongClick(point: LatLng) {
         mMap.clear()
-        val marker = MarkerOptions().position(point).title("リマインド箇所")
+        val markerOptions = MarkerOptions()
+        val marker = markerOptions.position(point).title("リマインド箇所")
         mMap.addMarker(marker)
+        selectedLat = markerOptions.position.latitude
+        selectedLng = markerOptions.position.longitude
     }
 }
