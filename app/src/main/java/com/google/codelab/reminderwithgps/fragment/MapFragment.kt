@@ -100,7 +100,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     if (locationResult?.lastLocation != null) {
                         lastLocation = locationResult.lastLocation
                         val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng))
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14.0f))
                     }
                 }
             }
