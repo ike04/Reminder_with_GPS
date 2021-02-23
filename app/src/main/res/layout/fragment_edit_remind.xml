@@ -54,4 +54,15 @@
         app:layout_constraintTop_toBottomOf="@id/editRemindMemo"
         tools:context=".fragment.EditFragment" />
 
+    <CheckBox
+        android:id="@+id/edit_isDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/done_text"
+        app:layout_constraintBottom_toBottomOf="@+id/editRemindTitleTextView"
+        app:layout_constraintEnd_toEndOf="@+id/editRemindMemo"
+        app:layout_constraintStart_toEndOf="@+id/editRemindTitleTextView"
+        app:layout_constraintTop_toTopOf="@+id/editRemindTitleTextView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

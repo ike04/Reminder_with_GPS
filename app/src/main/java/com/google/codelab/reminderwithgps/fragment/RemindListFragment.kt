@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,14 +35,16 @@ class RemindListFragment : Fragment() {
                 createTestData(),
                 object : RemindListCellRecyclerViewAdapter.ListListener {
                     override fun onClickRow(tappedView: View, selectedRemind: Remind) {
-//                        setFragmentResult(
-//                            "selectedBook", bundleOf(
-//                                "book_image" to selectedBook.image,
-//                                "book_title" to selectedBook.title,
-//                                "book_price" to selectedBook.price,
-//                                "book_purchase_date" to selectedBook.purchaseDate
-//                            )
-//                        )
+                        setFragmentResult(
+                            "selected_remind", bundleOf(
+                                "remind_title" to selectedRemind.title,
+                                "remind_memo" to selectedRemind.memo,
+                                "remind_lat" to selectedRemind.lat,
+                                "remind_lng" to selectedRemind.lng,
+                                "remind_date" to selectedRemind.dateTime,
+                                "remind_done" to selectedRemind.isDone
+                            )
+                        )
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.activity_main, EditRemindFragment())
                             .addToBackStack(null)

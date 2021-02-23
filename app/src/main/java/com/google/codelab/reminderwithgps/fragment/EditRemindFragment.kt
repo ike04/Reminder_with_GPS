@@ -5,15 +5,19 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.view.*
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
@@ -27,6 +31,8 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
+    private var editLatPin: Double = 0.0
+    private var editLngPin: Double = 0.0
     private var selectedLat: Double = 0.0
     private var selectedLng: Double = 0.0
 
@@ -38,19 +44,37 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         setHasOptionsMenu(true)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        setFragmentResultListener("selected_remind") { _, bundle ->
+            view?.apply {
+                findViewById<EditText>(R.id.editRemindTitleTextView)?.setText(bundle.getString("remind_title"))
+            }
+            editLatPin = bundle.getDouble("remind_lat")
+            editLngPin = bundle.getDouble("remind_lng")
+        }
+
         return inflater.inflate(R.layout.fragment_edit_remind, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val mapFragment = childFragmentManager.findFragmentById(R.id.edit_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         checkPermission()
+        addMarker(editLatPin, editLngPin)
         mMap.setOnMapLongClickListener(this)
+    }
+
+    private fun addMarker(lat: Double, lng: Double) {
+        mMap.addMarker(
+            MarkerOptions()
+                .position(LatLng(lat, lng))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+        )
     }
 
     private fun checkPermission() {
@@ -61,7 +85,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         ) {
             myLocationEnable()
         } else {
-            MapUtils.requestLocationPermission(requireContext(),requireActivity())
+            MapUtils.requestLocationPermission(requireContext(), requireActivity())
         }
     }
 
