@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">ReminderWithGPS</string>
+    <string name="email_text">メールアドレス</string>
+    <string name="password_text">パスワード</string>
+    <string name="login_btn">メールアドレスでログイン</string>
+    <string name="sign_in_btn">サインアップする</string>
+    <string name="password_confirm_text">確認パスワード</string>
+    <string name="login">ログイン</string>
+    <string name="sign_up">サインアップ</string>
+    <string name="remind_list">一覧</string>
+    <string name="map_list">地図</string>
+    <string name="done_text">Done</string>
+    <string name="add_remind">リマインド作成</string>
+    <string name="remind_title_text">リマインドのタイトル</string>
+    <string name="remind_memo_text">メモ</string>
+    <string name="save">保存</string>
+
+    <string name="ok">OK</string>
+    <string name="warning">警告</string>
+    <string name="empty_text">未入力の項目があります</string>
+    <string name="min_password">パスワードは6桁以上です</string>
+    <string name="invalid_email">メールアドレスの形式が正しくありません</string>
+    <string name="not_match_password">パスワードが一致していません</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
