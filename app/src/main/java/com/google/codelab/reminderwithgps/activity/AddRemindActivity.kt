@@ -39,6 +39,7 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
         setContentView(R.layout.activity_add_remind)
 
         supportActionBar?.setTitle(R.string.add_remind)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -128,11 +129,7 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags =
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-
+                finish()
                 return true
             }
             android.R.id.home -> {

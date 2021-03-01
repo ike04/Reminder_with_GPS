@@ -47,6 +47,8 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         setFragmentResultListener("selected_remind") { _, bundle ->
             view?.apply {
                 findViewById<EditText>(R.id.editRemindTitleTextView)?.setText(bundle.getString("remind_title"))
+                findViewById<CheckBox>(R.id.edit_isDone).isChecked =
+                    bundle.getBoolean("remind_done")
             }
             editLatPin = bundle.getDouble("remind_lat")
             editLngPin = bundle.getDouble("remind_lng")
@@ -66,6 +68,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         mMap = googleMap
         checkPermission()
         addMarker(editLatPin, editLngPin)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(editLatPin, editLngPin), 14.0f))
         mMap.setOnMapLongClickListener(this)
     }
 
@@ -114,26 +117,16 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
-            val locationRequest = LocationRequest().apply {
-                interval = 10000
-                fastestInterval = 5000
-                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            }
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     super.onLocationResult(locationResult)
                     if (locationResult?.lastLocation != null) {
                         lastLocation = locationResult.lastLocation
-                        val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                        val currentLatLng = LatLng(editLatPin, editLngPin)
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 14.0f))
                     }
                 }
             }
-            fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                null
-            )
         }
     }
 

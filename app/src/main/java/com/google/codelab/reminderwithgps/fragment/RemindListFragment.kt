@@ -14,6 +14,7 @@ import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.Remind
 import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
 import com.google.codelab.reminderwithgps.activity.AddRemindActivity
+import java.lang.Math.random
 import java.util.*
 
 class RemindListFragment : Fragment() {
@@ -84,10 +85,10 @@ class RemindListFragment : Fragment() {
             val data = Remind()
             data.title = "テストデータ$i"
             data.memo = ""
-            data.lat = 35.6578976
-            data.lng = 139.9070041
+            data.lat = random()
+            data.lng = random()
             data.dateTime = Date()
-            data.isDone = true
+            data.isDone = i % 2 ==0
 
             dataSet.add(data)
             i += 1
