@@ -21,16 +21,25 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils
+import io.realm.Realm
+import io.realm.kotlin.createObject
+import io.realm.kotlin.where
+import java.util.*
 
 class EditRemindFragment : Fragment(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
     private lateinit var mMap: GoogleMap
     private val MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1
 
+    private lateinit var realm: Realm
+
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
+
+    private var remindId: String? = null
     private var editLatPin: Double = 0.0
     private var editLngPin: Double = 0.0
     private var selectedLat: Double = 0.0
@@ -43,6 +52,8 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         requireActivity().setTitle(R.string.remind_list)
         setHasOptionsMenu(true)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        realm = Realm.getDefaultInstance()
 
         setFragmentResultListener("selected_remind") { _, bundle ->
             view?.apply {
@@ -147,6 +158,18 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
+                val target = realm.where(Remind::class.java)
+                    .equalTo("id",remindId)
+                    .findFirst()
+
+                realm.executeTransaction {
+                    target?.title =
+                        view?.findViewById<EditText>(R.id.editRemindTitleTextView)?.text.toString()
+                    target?.lat = selectedLat
+                    target?.lng = selectedLng
+                    target?.dateTime = Date()
+                    target?.isDone = view?.findViewById<CheckBox>(R.id.edit_isDone)?.isChecked == true
+                }
                 parentFragmentManager.popBackStack()
                 return true
             }
@@ -156,5 +179,10 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }

@@ -14,10 +14,14 @@ import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
 import com.google.codelab.reminderwithgps.activity.AddRemindActivity
+import io.realm.Realm
+import io.realm.RealmResults
+import io.realm.kotlin.where
 import java.lang.Math.random
 import java.util.*
 
 class RemindListFragment : Fragment() {
+    private lateinit var realm: Realm
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,11 +33,13 @@ class RemindListFragment : Fragment() {
         setHasOptionsMenu(true)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+        realm = Realm.getDefaultInstance()
+
         view.findViewById<RecyclerView>(R.id.recycler_remind_list).apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
             adapter = RemindListCellRecyclerViewAdapter(
-                createTestData(),
+                fetchRemindData(),
                 object : RemindListCellRecyclerViewAdapter.ListListener {
                     override fun onClickRow(tappedView: View, selectedRemind: Remind) {
                         setFragmentResult(
@@ -77,22 +83,26 @@ class RemindListFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun createTestData(): List<Remind> {
+    private fun fetchRemindData(): List<Remind> {
         val dataSet: MutableList<Remind> = ArrayList()
-        var i = 1
+        val realmResults = realm.where(Remind::class.java).findAll()
 
-        while (i <= 10) {
+        for (remind: Remind in realmResults){
             val data = Remind()
-            data.title = "テストデータ$i"
-            data.memo = ""
-            data.lat = random()
-            data.lng = random()
-            data.dateTime = Date()
-            data.isDone = i % 2 ==0
+            data.title = remind.title
+            data.memo = remind.memo
+            data.lng = remind.lng
+            data.lat = remind.lat
+            data.dateTime = remind.dateTime
+            data.isDone = remind.isDone
 
             dataSet.add(data)
-            i += 1
         }
         return dataSet
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }
