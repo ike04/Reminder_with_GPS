@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,8 +27,6 @@ import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils
 import io.realm.Realm
-import io.realm.kotlin.createObject
-import io.realm.kotlin.where
 import java.util.*
 
 class EditRemindFragment : Fragment(), OnMapReadyCallback,
@@ -39,7 +40,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
 
-    private var remindId: String? = null
+    private var remindId: Long? = null
     private var editLatPin: Double = 0.0
     private var editLngPin: Double = 0.0
     private var selectedLat: Double = 0.0
@@ -56,6 +57,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         realm = Realm.getDefaultInstance()
 
         setFragmentResultListener("selected_remind") { _, bundle ->
+            remindId = bundle.getLong("remind_id")
             view?.apply {
                 findViewById<EditText>(R.id.editRemindTitleTextView)?.setText(bundle.getString("remind_title"))
                 findViewById<CheckBox>(R.id.edit_isDone).isChecked =
@@ -158,18 +160,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
-                val target = realm.where(Remind::class.java)
-                    .equalTo("id",remindId)
-                    .findFirst()
-
-                realm.executeTransaction {
-                    target?.title =
-                        view?.findViewById<EditText>(R.id.editRemindTitleTextView)?.text.toString()
-                    target?.lat = selectedLat
-                    target?.lng = selectedLng
-                    target?.dateTime = Date()
-                    target?.isDone = view?.findViewById<CheckBox>(R.id.edit_isDone)?.isChecked == true
-                }
+                updateRemind()
                 parentFragmentManager.popBackStack()
                 return true
             }
@@ -184,5 +175,20 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
     override fun onDestroy() {
         super.onDestroy()
         realm.close()
+    }
+
+    private fun updateRemind() {
+        val target = realm.where(Remind::class.java)
+            .equalTo("id", remindId)
+            .findFirst()
+
+        realm.executeTransaction {
+            target?.title =
+                view?.findViewById<EditText>(R.id.editRemindTitleTextView)?.text.toString()
+            target?.lat = selectedLat
+            target?.lng = selectedLng
+            target?.dateTime = Date()
+            target?.isDone = view?.findViewById<CheckBox>(R.id.edit_isDone)?.isChecked == true
+        }
     }
 }

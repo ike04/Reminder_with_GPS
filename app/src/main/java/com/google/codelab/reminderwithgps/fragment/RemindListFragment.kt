@@ -44,6 +44,7 @@ class RemindListFragment : Fragment() {
                     override fun onClickRow(tappedView: View, selectedRemind: Remind) {
                         setFragmentResult(
                             "selected_remind", bundleOf(
+                                "remind_id" to selectedRemind.id,
                                 "remind_title" to selectedRemind.title,
                                 "remind_memo" to selectedRemind.memo,
                                 "remind_lat" to selectedRemind.lat,
@@ -89,6 +90,7 @@ class RemindListFragment : Fragment() {
 
         for (remind: Remind in realmResults){
             val data = Remind()
+            data.id = remind.id
             data.title = remind.title
             data.memo = remind.memo
             data.lng = remind.lng

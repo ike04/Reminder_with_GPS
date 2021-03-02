@@ -25,7 +25,6 @@ import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils.requestLocationPermission
 import io.realm.Realm
-import io.realm.kotlin.createObject
 import io.realm.kotlin.where
 import java.util.*
 
@@ -138,18 +137,7 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
-                realm.executeTransaction {
-                    val maxId = realm.where<Remind>().max("id")
-                    val nextId = (maxId?.toLong() ?: 0L) + 1L
-                    val remind = realm.createObject<Remind>(nextId)
-
-                    remind.title =
-                        findViewById<EditText>(R.id.addRemindTitleTextView).text.toString()
-                    remind.lat = selectedLat
-                    remind.lng = selectedLng
-                    remind.dateTime = Date()
-                    remind.isDone = false
-                }
+                createRemind()
 
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
@@ -167,6 +155,22 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onDestroy() {
         super.onDestroy()
         realm.close()
+    }
+
+    private fun createRemind() {
+        val maxId = realm.where<Remind>().max("id")
+        val nextId = (maxId?.toLong() ?: 0L) + 1L
+
+        realm.executeTransaction {
+            val remind = realm.createObject(Remind::class.java, nextId)
+
+            remind.title =
+                findViewById<EditText>(R.id.addRemindTitleTextView).text.toString()
+            remind.lat = selectedLat
+            remind.lng = selectedLng
+            remind.dateTime = Date()
+            remind.isDone = false
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

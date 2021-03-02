@@ -6,7 +6,8 @@ import java.util.*
 
 open class Remind : RealmObject() {
     @PrimaryKey
-    var id: Long = 0
+    var id: Long? = null
+
     var title: String = ""
     var memo: String? = null
     var lat: Double = 0.0
