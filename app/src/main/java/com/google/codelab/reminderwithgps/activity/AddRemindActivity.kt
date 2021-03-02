@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils.requestLocationPermission
+import com.google.codelab.reminderwithgps.utils.ValidationUtils
 import io.realm.Realm
 import io.realm.kotlin.where
 import java.util.*
@@ -37,8 +38,8 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
-    private var selectedLat: Double = 0.0
-    private var selectedLng: Double = 0.0
+    private var selectedLat: Double? = null
+    private var selectedLng: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,11 +138,21 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
-                createRemind()
+                val title = findViewById<EditText>(R.id.addRemindTitleTextView).text.toString()
+                val lat = selectedLat
+                val lng = selectedLng
+                val errorMessage = ValidationUtils.checkRemind(title, lat, lng)
 
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+                if (errorMessage == null) {
+                    createRemind(title, lat!!, lng!!)
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                }
+
                 return true
             }
             android.R.id.home -> {
@@ -157,17 +168,16 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
         realm.close()
     }
 
-    private fun createRemind() {
+    private fun createRemind(title: String, lat: Double, lng: Double) {
         val maxId = realm.where<Remind>().max("id")
         val nextId = (maxId?.toLong() ?: 0L) + 1L
 
         realm.executeTransaction {
             val remind = realm.createObject(Remind::class.java, nextId)
 
-            remind.title =
-                findViewById<EditText>(R.id.addRemindTitleTextView).text.toString()
-            remind.lat = selectedLat
-            remind.lng = selectedLng
+            remind.title = title
+            remind.lat = lat
+            remind.lng = lng
             remind.dateTime = Date()
             remind.isDone = false
         }

@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils
+import com.google.codelab.reminderwithgps.utils.ValidationUtils
 import io.realm.Realm
 import java.util.*
 
@@ -160,8 +161,18 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
-                updateRemind()
-                parentFragmentManager.popBackStack()
+                val title =
+                    view?.findViewById<EditText>(R.id.editRemindTitleTextView)?.text.toString()
+                val lat = selectedLat
+                val lng = selectedLng
+                val errorMessage = ValidationUtils.checkRemind(title, lat, lng)
+
+                if (errorMessage == null) {
+                    updateRemind(title, lat, lng)
+                    parentFragmentManager.popBackStack()
+                } else {
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
+                }
                 return true
             }
             android.R.id.home -> {
@@ -177,16 +188,15 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         realm.close()
     }
 
-    private fun updateRemind() {
+    private fun updateRemind(title: String, lat: Double, lng: Double) {
         val target = realm.where(Remind::class.java)
             .equalTo("id", remindId)
             .findFirst()
 
         realm.executeTransaction {
-            target?.title =
-                view?.findViewById<EditText>(R.id.editRemindTitleTextView)?.text.toString()
-            target?.lat = selectedLat
-            target?.lng = selectedLng
+            target?.title = title
+            target?.lat = lat
+            target?.lng = lng
             target?.dateTime = Date()
             target?.isDone = view?.findViewById<CheckBox>(R.id.edit_isDone)?.isChecked == true
         }

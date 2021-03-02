@@ -18,6 +18,7 @@
     <string name="ok">OK</string>
     <string name="warning">警告</string>
     <string name="empty_text">未入力の項目があります</string>
+    <string name="empty_map">リマインドする場所を指定してください</string>
     <string name="min_password">パスワードは6桁以上です</string>
     <string name="invalid_email">メールアドレスの形式が正しくありません</string>
     <string name="not_match_password">パスワードが一致していません</string>
