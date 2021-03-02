@@ -15,13 +15,19 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils
+import io.realm.Realm
 
 class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private val MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1
+
+    private lateinit var realm: Realm
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
@@ -30,6 +36,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().setTitle(R.string.map_list)
+
+        realm = Realm.getDefaultInstance()
     }
 
     override fun onCreateView(
@@ -50,6 +58,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         checkPermission()
+        setAllPins()
     }
 
     private fun checkPermission() {
@@ -89,11 +98,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
-            val locationRequest = LocationRequest().apply {
-                interval = 10000
-                fastestInterval = 5000
-                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            }
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     super.onLocationResult(locationResult)
@@ -104,12 +108,29 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     }
                 }
             }
-            fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                null
-            )
         }
+    }
+
+    private fun setAllPins(){
+        val realmResults = realm.where(Remind::class.java).findAll()
+
+        for (remind: Remind in realmResults) {
+            val data = Remind()
+            data.title = remind.title
+            data.lng = remind.lng
+            data.lat = remind.lat
+
+            addMarker(data.title,data.lat,data.lng)
+        }
+    }
+
+    private fun addMarker(title: String,lat: Double, lng: Double) {
+        mMap.addMarker(
+            MarkerOptions()
+                .position(LatLng(lat, lng))
+                .title(title)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+        )
     }
 
 }
