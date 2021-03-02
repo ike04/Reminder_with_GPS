@@ -21,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.textfield.TextInputLayout
 import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils.requestLocationPermission
@@ -176,6 +177,7 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
             val remind = realm.createObject(Remind::class.java, nextId)
 
             remind.title = title
+            remind.memo= findViewById<TextInputLayout>(R.id.reminder_memo).editText?.text.toString()
             remind.lat = lat
             remind.lng = lng
             remind.dateTime = Date()

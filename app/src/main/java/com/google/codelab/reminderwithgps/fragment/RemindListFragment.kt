@@ -15,9 +15,6 @@ import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
 import com.google.codelab.reminderwithgps.activity.AddRemindActivity
 import io.realm.Realm
-import io.realm.RealmResults
-import io.realm.kotlin.where
-import java.lang.Math.random
 import java.util.*
 
 class RemindListFragment : Fragment() {

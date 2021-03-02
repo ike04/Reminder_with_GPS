@@ -23,6 +23,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.textfield.TextInputLayout
 import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils
@@ -61,6 +62,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
             remindId = bundle.getLong("remind_id")
             view?.apply {
                 findViewById<EditText>(R.id.editRemindTitleTextView)?.setText(bundle.getString("remind_title"))
+                findViewById<TextInputLayout>(R.id.editRemindMemo).editText?.setText(bundle.getString("remind_memo"))
                 findViewById<CheckBox>(R.id.edit_isDone).isChecked =
                     bundle.getBoolean("remind_done")
             }
@@ -195,6 +197,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
 
         realm.executeTransaction {
             target?.title = title
+            target?.memo = view?.findViewById<TextInputLayout>(R.id.editRemindMemo)?.editText?.text.toString()
             target?.lat = lat
             target?.lng = lng
             target?.dateTime = Date()

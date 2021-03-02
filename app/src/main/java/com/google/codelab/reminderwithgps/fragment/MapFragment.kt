@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -111,26 +114,29 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun setAllPins(){
+    private fun setAllPins() {
         val realmResults = realm.where(Remind::class.java).findAll()
 
         for (remind: Remind in realmResults) {
             val data = Remind()
             data.title = remind.title
+            data.memo = remind.memo
             data.lng = remind.lng
             data.lat = remind.lat
 
-            addMarker(data.title,data.lat,data.lng)
+            addMarker(data.title, data.memo, data.lat, data.lng)
         }
     }
 
-    private fun addMarker(title: String,lat: Double, lng: Double) {
+    private fun addMarker(title: String, memo: String?, lat: Double, lng: Double) {
         mMap.addMarker(
             MarkerOptions()
                 .position(LatLng(lat, lng))
                 .title(title)
+                .snippet(memo)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-        )
+        ).showInfoWindow()
+
     }
 
 }
