@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.codelab.reminderwithgps.model.Remind
 
 class RemindListCellRecyclerViewAdapter(
     private val remindList: List<Remind>,

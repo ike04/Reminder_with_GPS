@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.codelab.reminderwithgps.R
-import com.google.codelab.reminderwithgps.Remind
+import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
 import com.google.codelab.reminderwithgps.activity.AddRemindActivity
 import java.lang.Math.random
