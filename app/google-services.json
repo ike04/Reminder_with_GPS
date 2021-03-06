@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "145170578845",
+    "project_id": "reminderwithgps",
+    "storage_bucket": "reminderwithgps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145170578845:android:66406fe37860dc2f744374",
+        "android_client_info": {
+          "package_name": "com.google.codelab.reminderwithgps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145170578845-f86c3daajqag803qglog3a24utvpovjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzCX9aHtI2APR3Vk5tamZGv4hGWymnOkE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145170578845-f86c3daajqag803qglog3a24utvpovjk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
