@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.codelab.reminderwithgps.R
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
@@ -62,24 +63,12 @@ class RemindListFragment : Fragment() {
             addItemDecoration(separateLine)
         }
 
-        return view
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_add, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_add -> {
-                val intent = Intent(activity, AddRemindActivity::class.java)
-                startActivity(intent)
-                return true
-            }
+        (view.findViewById(R.id.add_remind) as FloatingActionButton).setOnClickListener {
+            val intent = Intent(activity, AddRemindActivity::class.java)
+            startActivity(intent)
         }
-        return super.onOptionsItemSelected(item)
+
+        return view
     }
 
     private fun fetchRemindData(): List<Remind> {

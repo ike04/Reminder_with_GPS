@@ -1,6 +1,7 @@
 package com.google.codelab.reminderwithgps.fragment
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -18,7 +19,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.activity.AddRemindActivity
 import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils
 import io.realm.Realm
@@ -53,6 +56,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireContext())
+
+        (view.findViewById(R.id.add_remind) as FloatingActionButton).setOnClickListener {
+            val intent = Intent(activity, AddRemindActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
