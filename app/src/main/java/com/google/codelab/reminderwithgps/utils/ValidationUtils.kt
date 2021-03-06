@@ -40,6 +40,15 @@ object ValidationUtils {
         return null
     }
 
+    fun checkRemind(title: String, lat: Double?, lng: Double?): Int? {
+        if (title.isEmpty()) {
+            return R.string.empty_text
+        } else if (lat == null || lng == null) {
+            return R.string.empty_map
+        }
+        return null
+    }
+
 
     private fun isValidEmail(email: String?): Boolean {
         return EMAIL_ADDRESS.matcher(email).matches()

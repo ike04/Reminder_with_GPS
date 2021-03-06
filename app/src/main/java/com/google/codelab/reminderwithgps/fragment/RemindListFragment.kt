@@ -9,15 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.codelab.reminderwithgps.R
-import com.google.codelab.reminderwithgps.Remind
+import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.RemindListCellRecyclerViewAdapter
 import com.google.codelab.reminderwithgps.activity.AddRemindActivity
-import java.lang.Math.random
+import io.realm.Realm
 import java.util.*
 
 class RemindListFragment : Fragment() {
+    private lateinit var realm: Realm
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,15 +31,18 @@ class RemindListFragment : Fragment() {
         setHasOptionsMenu(true)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+        realm = Realm.getDefaultInstance()
+
         view.findViewById<RecyclerView>(R.id.recycler_remind_list).apply {
             setHasFixedSize(true)
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context)
             adapter = RemindListCellRecyclerViewAdapter(
-                createTestData(),
+                fetchRemindData(),
                 object : RemindListCellRecyclerViewAdapter.ListListener {
                     override fun onClickRow(tappedView: View, selectedRemind: Remind) {
                         setFragmentResult(
                             "selected_remind", bundleOf(
+                                "remind_id" to selectedRemind.id,
                                 "remind_title" to selectedRemind.title,
                                 "remind_memo" to selectedRemind.memo,
                                 "remind_lat" to selectedRemind.lat,
@@ -77,22 +82,27 @@ class RemindListFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun createTestData(): List<Remind> {
+    private fun fetchRemindData(): List<Remind> {
         val dataSet: MutableList<Remind> = ArrayList()
-        var i = 1
+        val realmResults = realm.where(Remind::class.java).findAll()
 
-        while (i <= 10) {
+        for (remind: Remind in realmResults){
             val data = Remind()
-            data.title = "テストデータ$i"
-            data.memo = ""
-            data.lat = random()
-            data.lng = random()
-            data.dateTime = Date()
-            data.isDone = i % 2 ==0
+            data.id = remind.id
+            data.title = remind.title
+            data.memo = remind.memo
+            data.lng = remind.lng
+            data.lat = remind.lat
+            data.dateTime = remind.dateTime
+            data.isDone = remind.isDone
 
             dataSet.add(data)
-            i += 1
         }
         return dataSet
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }

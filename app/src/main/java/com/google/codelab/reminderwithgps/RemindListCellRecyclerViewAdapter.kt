@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.codelab.reminderwithgps.model.Remind
 
 class RemindListCellRecyclerViewAdapter(
     private val remindList: List<Remind>,
@@ -25,8 +26,8 @@ class RemindListCellRecyclerViewAdapter(
         holder.titleText.text = remind.title
         holder.date.text =
             DateFormat.format("yyyy/MM/dd kk:mm", remind.dateTime).toString()
+        holder.memoText.text = remind.memo
         holder.isDone.isChecked = remind.isDone
-
 
         holder.itemView.setOnClickListener {
             listener.onClickRow(it, remindList[position])
@@ -37,6 +38,7 @@ class RemindListCellRecyclerViewAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleText: TextView = view.findViewById(R.id.titleTextView)
+        val memoText: TextView = view.findViewById(R.id.memoTextView)
         val date: TextView = view.findViewById(R.id.dateTextView)
         val isDone: CheckBox = view.findViewById(R.id.doneCheckBox)
     }

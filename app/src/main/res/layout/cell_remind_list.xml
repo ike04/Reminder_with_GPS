@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <CheckBox
@@ -18,33 +18,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="@string/remind_title_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/doneCheckBox" />
+        app:layout_constraintStart_toEndOf="@+id/doneCheckBox"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:text="日付"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/doneCheckBox" />
+        app:layout_constraintTop_toTopOf="@+id/titleTextView" />
 
-    <androidx.fragment.app.FragmentContainerView xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cell_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        map:cameraZoom="15.0"
+    <TextView
+        android:id="@+id/memoTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintTop_toBottomOf="@id/titleTextView"
-        map:layout_constraintBottom_toBottomOf="parent"/>
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/remind_memo_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dateTextView"
+        app:layout_constraintStart_toStartOf="@+id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

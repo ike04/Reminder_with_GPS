@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -20,23 +21,32 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.textfield.TextInputLayout
 import com.google.codelab.reminderwithgps.R
+import com.google.codelab.reminderwithgps.model.Remind
 import com.google.codelab.reminderwithgps.utils.MapUtils.requestLocationPermission
+import com.google.codelab.reminderwithgps.utils.ValidationUtils
+import io.realm.Realm
+import io.realm.kotlin.where
+import java.util.*
 
 class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMapLongClickListener {
     private lateinit var mMap: GoogleMap
+    private lateinit var realm: Realm
     private val MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
     private var locationCallback: LocationCallback? = null
-    private var selectedLat: Double = 0.0
-    private var selectedLng: Double = 0.0
+    private var selectedLat: Double? = null
+    private var selectedLng: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_remind)
+
+        realm = Realm.getDefaultInstance()
 
         supportActionBar?.setTitle(R.string.add_remind)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -129,7 +139,21 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_button -> {
-                finish()
+                val title = findViewById<EditText>(R.id.addRemindTitleTextView).text.toString()
+                val lat = selectedLat
+                val lng = selectedLng
+                val errorMessage = ValidationUtils.checkRemind(title, lat, lng)
+
+                if (errorMessage == null) {
+                    createRemind(title, lat!!, lng!!)
+
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                }
+
                 return true
             }
             android.R.id.home -> {
@@ -138,6 +162,27 @@ class AddRemindActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
+    private fun createRemind(title: String, lat: Double, lng: Double) {
+        val maxId = realm.where<Remind>().max("id")
+        val nextId = (maxId?.toLong() ?: 0L) + 1L
+
+        realm.executeTransaction {
+            val remind = realm.createObject(Remind::class.java, nextId)
+
+            remind.title = title
+            remind.memo= findViewById<TextInputLayout>(R.id.reminder_memo).editText?.text.toString()
+            remind.lat = lat
+            remind.lng = lng
+            remind.dateTime = Date()
+            remind.isDone = false
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
