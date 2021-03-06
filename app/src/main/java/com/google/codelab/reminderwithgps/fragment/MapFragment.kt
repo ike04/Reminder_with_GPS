@@ -10,10 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -94,6 +91,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
     private fun myLocationEnable() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
@@ -101,6 +103,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             mMap.isMyLocationEnabled = true
+            val locationRequest = LocationRequest().apply {
+                interval = 10000
+                fastestInterval = 5000
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            }
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult?) {
                     super.onLocationResult(locationResult)
@@ -111,6 +118,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     }
                 }
             }
+            fusedLocationProviderClient.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                null
+            )
         }
     }
 
@@ -133,7 +145,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             MarkerOptions()
                 .position(LatLng(lat, lng))
                 .title(title)
-                .snippet(memo)
+                .snippet(memo.let { it?.take(8) })
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
         ).showInfoWindow()
 

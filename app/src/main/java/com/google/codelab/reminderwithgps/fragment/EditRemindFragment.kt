@@ -45,8 +45,6 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
     private var remindId: Long? = null
     private var editLatPin: Double = 0.0
     private var editLngPin: Double = 0.0
-    private var selectedLat: Double = 0.0
-    private var selectedLng: Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +60,11 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
             remindId = bundle.getLong("remind_id")
             view?.apply {
                 findViewById<EditText>(R.id.editRemindTitleTextView)?.setText(bundle.getString("remind_title"))
-                findViewById<TextInputLayout>(R.id.editRemindMemo).editText?.setText(bundle.getString("remind_memo"))
+                findViewById<TextInputLayout>(R.id.editRemindMemo).editText?.setText(
+                    bundle.getString(
+                        "remind_memo"
+                    )
+                )
                 findViewById<CheckBox>(R.id.edit_isDone).isChecked =
                     bundle.getBoolean("remind_done")
             }
@@ -151,8 +153,8 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         val markerOptions = MarkerOptions()
         val marker = markerOptions.position(point).title("リマインド箇所")
         mMap.addMarker(marker)
-        selectedLat = markerOptions.position.latitude
-        selectedLng = markerOptions.position.longitude
+        editLatPin = markerOptions.position.latitude
+        editLngPin = markerOptions.position.longitude
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -165,8 +167,8 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
             R.id.save_button -> {
                 val title =
                     view?.findViewById<EditText>(R.id.editRemindTitleTextView)?.text.toString()
-                val lat = selectedLat
-                val lng = selectedLng
+                val lat = editLatPin
+                val lng = editLngPin
                 val errorMessage = ValidationUtils.checkRemind(title, lat, lng)
 
                 if (errorMessage == null) {
@@ -197,7 +199,8 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
 
         realm.executeTransaction {
             target?.title = title
-            target?.memo = view?.findViewById<TextInputLayout>(R.id.editRemindMemo)?.editText?.text.toString()
+            target?.memo =
+                view?.findViewById<TextInputLayout>(R.id.editRemindMemo)?.editText?.text.toString()
             target?.lat = lat
             target?.lng = lng
             target?.dateTime = Date()

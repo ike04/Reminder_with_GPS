@@ -3,9 +3,11 @@
 
     <item
         android:id="@+id/navi_remind_list"
+        android:icon="@drawable/ic_baseline_list_24"
         android:title="@string/remind_list" />
     <item
         android:id="@+id/navi_map"
+        android:icon="@drawable/ic_baseline_map_24"
         android:title="@string/map_list" />
 
 </menu>
