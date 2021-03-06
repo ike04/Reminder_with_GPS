@@ -50,7 +50,7 @@ class EditRemindFragment : Fragment(), OnMapReadyCallback,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        requireActivity().setTitle(R.string.remind_list)
+        requireActivity().setTitle(R.string.remind_edit)
         setHasOptionsMenu(true)
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
