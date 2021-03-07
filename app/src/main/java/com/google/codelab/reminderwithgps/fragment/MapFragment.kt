@@ -140,12 +140,15 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         for (remind: Remind in realmResults) {
             val data = Remind()
-            data.title = remind.title
-            data.memo = remind.memo
-            data.lng = remind.lng
-            data.lat = remind.lat
 
-            addMarker(data.title, data.memo, data.lat, data.lng)
+            if (!remind.isDone) {
+                data.title = remind.title
+                data.memo = remind.memo
+                data.lng = remind.lng
+                data.lat = remind.lat
+
+                addMarker(data.title, data.memo, data.lat, data.lng)
+            }
         }
     }
 
