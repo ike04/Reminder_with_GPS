@@ -54,3 +54,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.android.material:material:1.4.0-alpha01'
 }
+apply plugin: 'com.google.gms.google-services'
